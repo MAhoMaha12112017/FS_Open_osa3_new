@@ -12,6 +12,12 @@ app.get('/api/persons', (req, res) => {
   res.json(persons);
 });
 
+app.get('/info', (req, res) => {
+  const dataToReturn = `<p>puhelinluettelossa ${persons.length} henkilön tiedot</p>` 
+    + `<p>${new Date()}</p>`;
+  res.send(dataToReturn);
+});
+
 app.listen(PORT);
 console.log(`Server running, listening port ${PORT}`);
 
