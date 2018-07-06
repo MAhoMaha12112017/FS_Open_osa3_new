@@ -37,7 +37,14 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const person = req.body;
-  person.id = Math.floor(Math.random() * 10000000); 
+  // name or length of 1 accepted..could be edited
+  if (person.name === undefined || person.number === undefined || person.name.length === 0 || person.number.length === 0) {
+    return res.status(400).json({ error: 'name and number mandatory, should be at least one letter/digit' });
+  } else if (isDuplicateName(person.name)) {
+    return res.status(400).json({ error: 'name must be unique' });
+  } 
+  // data ok, continues..
+  person.id = Math.floor(Math.random() * 10000000) + 99; 
   persons = persons.concat(person);
   res.json(person);
 });
@@ -45,6 +52,14 @@ app.post('/api/persons', (req, res) => {
 app.listen(PORT);
 console.log(`Server running, listening port ${PORT}`);
 
+// helpers
+const isDuplicateName = (name) => {
+  const double = persons.find(p => p.name === name);
+  if (double === undefined) {
+    return false; // not found --> false
+  }
+  return true; // found --> true
+}
 
 // hardcoded data
 let persons = [
@@ -68,4 +83,5 @@ let persons = [
     number: '040-123456',
     id: 4
   }
-]
+];
+
