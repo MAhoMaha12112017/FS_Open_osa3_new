@@ -14,13 +14,20 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id);
-  // console.log(id);
   const person = persons.find(p => p.id === id);
   if (person) {
     res.json(person);
   } else {
     res.status(404).end();
   }  
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id);
+  // console.log(persons.length);
+  persons = persons.filter(p => p.id !== id);
+  // console.log(persons.length);
+  res.status(204).end();
 });
 
 app.get('/info', (req, res) => {
@@ -34,7 +41,7 @@ console.log(`Server running, listening port ${PORT}`);
 
 
 // hardcoded data
-const persons = [
+let persons = [
   {
     name: 'Arto Hellas',
     number: '040-123456',
