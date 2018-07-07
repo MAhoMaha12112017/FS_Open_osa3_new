@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
+app.use(morgan('tiny'));
 
 // routes
 app.get('/info', (req, res) => {
