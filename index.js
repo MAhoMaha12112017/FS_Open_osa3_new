@@ -9,17 +9,6 @@ const PORT = process.env.port || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
-// app.use(morgan(':method :url :status :res[content-length] - :response-time ms -- :res[body]'));
-//app.use(morgan(function (tokens, req, res) {
-//  return [
-//    tokens.method(req, res),
-//    tokens.url(req, res),
-//    tokens.status(req, res),
-//    tokens.res(req, res, 'content-length'), '-',
-//    tokens['response-time'](req, res), 'ms',
-//    tokens.req(req, res, ['body'])
-//  ].join(' ')
-//}));
 
 // routes
 app.get('/info', (req, res) => {
@@ -53,7 +42,8 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const person = req.body;
   console.log(req.body);
-  // name or length of 1 accepted..could be edited
+  
+    // name or length of 1 accepted..could be edited
   if (person.name === undefined || person.number === undefined || person.name.length === 0 || person.number.length === 0) {
     return res.status(400).json({ error: 'name and number mandatory, should be at least one letter/digit' });
   } else if (isDuplicateName(person.name)) {
