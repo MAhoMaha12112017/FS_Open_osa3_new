@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA,OACE,uBACA,aACA,WACA,eAAiB","file":"static/css/main.25348df4.css","sourcesContent":[".error {\r\n  background-color: green;\r\n  padding: 12px;\r\n  color: white;\r\n  font-style: bold;\r\n}\n\n\n// WEBPACK FOOTER //\n// ./src/styles.css"],"sourceRoot":""}
