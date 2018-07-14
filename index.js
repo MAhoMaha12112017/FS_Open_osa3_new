@@ -1,15 +1,15 @@
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
+//const morgan = require('morgan');
 const cors = require('cors');
 
-const app = express();
 const PORT = process.env.port || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('build'))
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 
 // routes
 app.get('/info', (req, res) => {
@@ -55,6 +55,12 @@ app.post('/api/persons', (req, res) => {
   persons = persons.concat(person);
   res.json(person);
 });
+
+const error = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(error)
 
 app.listen(PORT, () => {
   console.log(`Server running, on port ${PORT}`);
