@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-//const morgan = require('morgan');
 const cors = require('cors');
 
 const PORT = process.env.port || 3001;
@@ -9,7 +8,6 @@ const PORT = process.env.port || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('build'))
-//app.use(morgan('tiny'));
 
 // routes
 app.get('/info', (req, res) => {
