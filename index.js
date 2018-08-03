@@ -3,8 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const PORT = process.env.port || 3001;
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('build'))
@@ -60,10 +58,6 @@ const error = (request, response) => {
 
 app.use(error)
 
-app.listen(PORT, () => {
-  console.log(`Server running, on port ${PORT}`);
-});
-
 
 // helpers
 const isDuplicateName = (name) => {
@@ -97,4 +91,9 @@ let persons = [
     id: 4
   }
 ];
+
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
 
