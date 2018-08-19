@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const Person = require('./models/person');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('build'))
+app.use(express.static('build'));
 
 // routes
 app.get('/info', (req, res) => {
@@ -15,7 +16,13 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  // res.json(persons);
+  Person
+    .find({}, {__v: 0})
+    .then(result => {
+      res.json(result);
+      mongoose.connection.close();
+    });
 });
 
 app.get('/api/persons/:id', (req, res) => {
@@ -66,6 +73,15 @@ const isDuplicateName = (name) => {
     return false; // not found --> false
   }
   return true; // found --> true
+}
+
+// helpers
+const formatPerson = (person) => {
+  return {
+      name: person.name,
+      number: person.number,
+      id: person._id
+  }
 }
 
 // hardcoded data
