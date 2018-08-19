@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const url = 'mongodb://fullstack:KhonMai33@ds129593.mlab.com:29593/notes';
+// url = ...
 
 mongoose.connect(url,  { useNewUrlParser: true });
 
