@@ -44,20 +44,43 @@ app.delete('/api/persons/:id', (req, res) => {
 });
 
 app.post('/api/persons', (req, res) => {
-  const person = req.body;
-  console.log(req.body);
-  
-    // name or length of 1 accepted..could be edited
-  if (person.name === undefined || person.number === undefined || person.name.length === 0 || person.number.length === 0) {
+
+  // only name or length of 1 accepted
+  if (req.body.name === undefined || req.body.number === undefined || req.body.name.length === 0 || req.body.number.length === 0) {
     return res.status(400).json({ error: 'name and number mandatory, should be at least one letter/digit' });
-  } else if (isDuplicateName(person.name)) {
+  } else if (isDuplicateName(req.body.name)) {
     return res.status(400).json({ error: 'name must be unique' });
   } 
-  // data ok, continues..
-  person.id = Math.floor(Math.random() * 10000000) + 99; 
-  persons = persons.concat(person);
-  res.json(person);
+
+  const person = new Person({
+    name: req.body.name,
+    number: req.body.number
+  });
+
+  console.log(person);
+  
+  person
+    .save()
+    .then(result => {
+      mongoose.connect.close();
+    });
 });
+
+// app.post('/api/persons', (req, res) => {
+//   const person = req.body;
+//   console.log(req.body);
+  
+//     // name or length of 1 accepted..could be edited
+//   if (person.name === undefined || person.number === undefined || person.name.length === 0 || person.number.length === 0) {
+//     return res.status(400).json({ error: 'name and number mandatory, should be at least one letter/digit' });
+//   } else if (isDuplicateName(person.name)) {
+//     return res.status(400).json({ error: 'name must be unique' });
+//   } 
+//   // data ok, continues..
+//   person.id = Math.floor(Math.random() * 10000000) + 99; 
+//   persons = persons.concat(person);
+//   res.json(person);
+// });
 
 const error = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
@@ -74,15 +97,6 @@ const isDuplicateName = (name) => {
   }
   return true; // found --> true
 }
-
-// helpers
-// const formatPerson = (person) => {
-//   return {
-//       name: person.name,
-//       number: person.number,
-//       id: person._id
-//   }
-// }
 
 // hardcoded data
 let persons = [

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// url = ...
+const url = 'removedXXX';
 
 mongoose.connect(url,  { useNewUrlParser: true });
 
