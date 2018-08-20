@@ -20,7 +20,7 @@ app.get('/api/persons', (req, res) => {
   Person
     .find({}, {__v: 0})
     .then(result => {
-      res.json(result);
+      res.json(result.map(Person.formatPerson));
       mongoose.connection.close();
     });
 });
@@ -76,13 +76,13 @@ const isDuplicateName = (name) => {
 }
 
 // helpers
-const formatPerson = (person) => {
-  return {
-      name: person.name,
-      number: person.number,
-      id: person._id
-  }
-}
+// const formatPerson = (person) => {
+//   return {
+//       name: person.name,
+//       number: person.number,
+//       id: person._id
+//   }
+// }
 
 // hardcoded data
 let persons = [

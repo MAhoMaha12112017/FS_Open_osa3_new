@@ -3,12 +3,28 @@ const mongoose = require('mongoose');
 
 mongoose.connect(url,  { useNewUrlParser: true });
 
-const Person = mongoose.model('Person', {
+const PersonSchema = new mongoose.Schema({
   name: 'String',
   number: 'String'
-});
+})
+
+PersonSchema.statics.formatPerson = function(person) {
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
+}
+
+const Person = mongoose.model('Person', PersonSchema);
 
 module.exports = Person;
+
+// const Person = mongoose.model('Person', {
+//   name: 'String',
+//   number: 'String'
+// });
+
 
 /*
 if (process.argv[2] && process.argv[3]) {
