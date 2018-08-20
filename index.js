@@ -22,6 +22,8 @@ app.get('/api/persons', (req, res) => {
     .then(result => {
       res.json(result.map(Person.formatPerson));
       mongoose.connection.close();
+    }).catch(error => {
+      console.log(error)
     });
 });
 
@@ -63,24 +65,10 @@ app.post('/api/persons', (req, res) => {
     .save()
     .then(result => {
       mongoose.connect.close();
+    }).catch(error => {
+      console.log(error)
     });
 });
-
-// app.post('/api/persons', (req, res) => {
-//   const person = req.body;
-//   console.log(req.body);
-  
-//     // name or length of 1 accepted..could be edited
-//   if (person.name === undefined || person.number === undefined || person.name.length === 0 || person.number.length === 0) {
-//     return res.status(400).json({ error: 'name and number mandatory, should be at least one letter/digit' });
-//   } else if (isDuplicateName(person.name)) {
-//     return res.status(400).json({ error: 'name must be unique' });
-//   } 
-//   // data ok, continues..
-//   person.id = Math.floor(Math.random() * 10000000) + 99; 
-//   persons = persons.concat(person);
-//   res.json(person);
-// });
 
 const error = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
