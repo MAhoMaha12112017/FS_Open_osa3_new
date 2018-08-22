@@ -21,7 +21,7 @@ app.get('/api/persons', (req, res) => {
     .find({}, {__v: 0})
     .then(result => {
       res.json(result.map(Person.formatPerson));
-      mongoose.connection.close();
+      // mongoose.connection.close();
     }).catch(error => {
       console.log(error)
     });
@@ -33,16 +33,21 @@ app.get('/api/persons/:id', (req, res) => {
   if (person) {
     res.json(person);
   } else {
-    res.status(404).end();
+    res.status(404).end();  
   }  
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-  // console.log(persons.length);
-  persons = persons.filter(p => p.id !== id);
-  // console.log(persons.length);
-  res.status(204).end();
+  
+  Person
+    .findByIdAndRemove(req.params.id)
+    .then(res => {
+      console.log(res);
+      res.status(204).end();
+      // mongoose.connection.close();
+    }).catch(error => {
+      response.status(400).send({ error: 'malformatted id' })
+    });  
 });
 
 app.post('/api/persons', (req, res) => {
@@ -64,7 +69,7 @@ app.post('/api/persons', (req, res) => {
   person
     .save()
     .then(result => {
-      mongoose.connect.close();
+      // mongoose.connect.close();
     }).catch(error => {
       console.log(error)
     });
