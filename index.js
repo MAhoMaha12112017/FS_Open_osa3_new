@@ -10,9 +10,13 @@ app.use(express.static('build'));
 
 // routes
 app.get('/info', (req, res) => {
-  const dataToReturn = `<p>puhelinluettelossa ${persons.length} henkilön tiedot</p>` 
-    + `<p>${new Date()}</p>`;
-  res.send(dataToReturn);
+  Person
+    .find({})
+    .then(result => {
+      res.send(`<p>puhelinluettelossa ${result.length} henkilön tiedot</p>` )
+    }).catch(error => {
+      console.log(error)
+    });
 });
 
 app.get('/api/persons', (req, res) => {
@@ -28,13 +32,19 @@ app.get('/api/persons', (req, res) => {
 });
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find(p => p.id === id);
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();  
-  }  
+  const id = req.params.id;
+
+  Person
+    .findById(id)
+    .then(person => {
+      if (person) {
+        res.json(Person.formatPerson(person));
+      } else {
+        response.status(404).end();
+      }
+    }).catch(error => {
+      response.status(400).send({ error: 'malformatted id' })
+    }); 
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -64,7 +74,7 @@ app.post('/api/persons', (req, res) => {
     number: req.body.number
   });
 
-  console.log(person);
+  // console.log('person');
   
   person
     .save()
@@ -78,6 +88,21 @@ app.post('/api/persons', (req, res) => {
 const error = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
+
+app.put('api/persons/:id', (req, res) => {
+  // ei löydä mitään, antaapa hautua
+  console.log(req.params.number);
+  console.log('apiapaiaop')
+  // Person
+  //   .findByIdAndUpdate(req.params.id, { number: req.params.number })
+  //   .then(updatedPerson => {
+  //     // console.log(updatedPerson);
+  //     res.json(Person.formatPerson(updatedPerson))
+  //   }).catch(error => {
+  //     console.log(error)
+  //     response.status(400).send({ error: 'malformatted id' })
+  //   });
+});
 
 app.use(error)
 

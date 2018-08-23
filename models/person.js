@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const url = 'removedXXX';
 
+
 mongoose.connect(url,  { useNewUrlParser: true });
 
 const PersonSchema = new mongoose.Schema({
